@@ -14,5 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('recipe-index',['recipes' => \App\Recipe::all()]);
 });
+
+Route::view('/new','recipe-index',['recipes' => []]);

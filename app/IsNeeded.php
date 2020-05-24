@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class IsNeeded extends Pivot
 {
-    public $id;
-    public $amount;
+
 
 
     public function recipe(){

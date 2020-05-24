@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ingredient extends Model
 {
-    public $id;
-    public $unit_id;
-    public $name;
+
 
 
     public function unit(){

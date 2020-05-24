@@ -6,11 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipe extends Model
 {
-    public $id;
-    public $time;
-    public $name;
-    public $description;
-    public $extras;
 
 
     public function pictures(){
