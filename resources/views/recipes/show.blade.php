@@ -17,7 +17,7 @@
                     <div class="carousel-inner">
                         @foreach($recipe->pictures as $picture)
                             <div class="carousel-item @if($loop->first) active @endif ">
-                                <img class="w-100 bg-light" src="{{asset($picture['path-to-picture'])}}">
+                                <img class="w-100 bg-light" src="{{asset($picture['path-to-picture'])}}" alt="picture of recipe">
                             </div>
                         @endforeach
                     </div>

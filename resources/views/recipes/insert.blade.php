@@ -20,6 +20,13 @@
                        value="@isset($recipe){{$recipe->name}}@endisset">
             </div>
 
+
+            <div class="form-group">
+                <label for="inputTime">Benötigte Zeit (Minuten):</label>
+                <input type="number" class="form-control" id="inputTime" name="time"
+                       value="@isset($recipe){{$recipe->time}}@else10@endisset">
+            </div>
+
             <div class="form-group">
                 <label for="inputDescription">Beschreibung:</label>
                 <input type="text" class="form-control" id="inputDescription" name="description"
@@ -40,7 +47,7 @@
                         @isset($recipe)
                             @foreach($recipe->ingredients as $ingredient)
                                 <tr>
-                                    <td>{{$ingredient->name}}</td>
+                                    <td><input name="name" type="text" value="{{$ingredient->name}}"></td>
                                     <td>{{$ingredient->pivot->amount . ' ' . $ingredient->unit->name}}</td>
                                 </tr>
                             @endforeach
