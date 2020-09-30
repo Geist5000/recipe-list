@@ -10,11 +10,28 @@ class TagController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
     {
-        //
+        $allTags = Tag::select('*')->orderBy('name','asc')->get();
+
+        $tags = [];
+        $currentStartChar = '';
+        foreach ($allTags as $tag){
+            $firstChar = substr($tag->name,0,1);
+            if($firstChar!=$currentStartChar){
+                $currentStartChar = $firstChar;
+                $tags[$currentStartChar] = [];
+            }
+
+            array_push($tags[$currentStartChar],$tag);
+        }
+
+
+
+
+        return view("tag.showAll",["tags" => $tags]);
     }
 
     /**

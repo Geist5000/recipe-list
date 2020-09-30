@@ -26,7 +26,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="{{url('/')}}">
-        <imgsrc="{{asset('pictures/logo/Rezepte-Logo.png')}}" width="60" height="60">
+        <img src="{{asset('pictures/logo/Rezepte-Logo.png')}}" width="60" height="60" alt="Logo">
         Rezept Liste
     </a>
 
@@ -37,12 +37,15 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <a class="nav-item nav-link @if(url()->current() == route('recipes.index')) active @endif"
-               href="{{route('recipes.index')}}">Alle Rezepte</a>
-            <a class="nav-item nav-link @if(url()->current() == route('recipes.create')) active @endif"
-               href="{{route('recipes.create')}}">Neues Rezept</a>
-            <a class="nav-item nav-link @if(url()->current() == route('tags.index')) active @endif"
-               href="{{route('tags.index')}}">Tags</a>
+            <li>
+                <a class="nav-item nav-link @if(url()->current() == route('recipes.index')) active @endif"
+                   href="{{route('recipes.index')}}">Alle Rezepte</a></li>
+            <li>
+                <a class="nav-item nav-link @if(url()->current() == route('recipes.create')) active @endif"
+                   href="{{route('recipes.create')}}">Neues Rezept</a></li>
+            <li>
+                <a class="nav-item nav-link @if(url()->current() == route('tags.index')) active @endif"
+                   href="{{route('tags.index')}}">Tags</a></li>
         </ul>
 
     </div>

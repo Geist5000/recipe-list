@@ -5,6 +5,7 @@
     <div class="container mt-3 mb-3">
 
         <h1>{{$recipe->name}}</h1>
+        <h6 class="mt-2 card-subtitle text-muted">Benötigte Zeit: {{$recipe->time}}</h6>
         <hr>
 
 
