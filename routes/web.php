@@ -13,8 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('recipe-index',['recipes' => \App\Recipe::all()]);
-});
+Route::redirect('/',url('/recipes'));
 
-Route::view('/new','recipe-index',['recipes' => []]);
+
+Route::resource('recipes','RecipeController');
+
+Route::resource('tags','TagController');

@@ -13,6 +13,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             crossorigin="anonymous"></script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Rezept Liste - @yield('title')</title>
     @hasSection('head')
         @yield('head')
@@ -21,11 +24,29 @@
 
 <body>
 
-<nav>
-<ul class="nav nav-tabs justify-content-center">
-    <a class="nav-item nav-link @if(url()->current() == url('/')) active @endif" href="{{url('/')}}">Alle Rezepte</a>
-    <a class="nav-item nav-link @if(url()->current() == url('/new')) active @endif" href="{{url('/new')}}">Neues Rezept</a>
-</ul>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{{url('/')}}">
+        <imgsrc="{{asset('pictures/logo/Rezepte-Logo.png')}}" width="60" height="60">
+        Rezept Liste
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <a class="nav-item nav-link @if(url()->current() == route('recipes.index')) active @endif"
+               href="{{route('recipes.index')}}">Alle Rezepte</a>
+            <a class="nav-item nav-link @if(url()->current() == route('recipes.create')) active @endif"
+               href="{{route('recipes.create')}}">Neues Rezept</a>
+            <a class="nav-item nav-link @if(url()->current() == route('tags.index')) active @endif"
+               href="{{route('tags.index')}}">Tags</a>
+        </ul>
+
+    </div>
+
 
 </nav>
 

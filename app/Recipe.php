@@ -17,6 +17,6 @@ class Recipe extends Model
     }
 
     public function ingredients(){
-        return $this->belongsToMany(Ingredient::class)->using(IsNeeded::class);
+        return $this->belongsToMany(Ingredient::class,'is_needed')->using(IsNeeded::class)->withPivot('amount');
     }
 }

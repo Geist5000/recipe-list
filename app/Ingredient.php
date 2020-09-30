@@ -10,7 +10,7 @@ class Ingredient extends Model
 
 
     public function unit(){
-        return $this->belongsToMany(Unit::class);
+        return $this->belongsTo(Unit::class);
     }
 
     public function recipes(){
