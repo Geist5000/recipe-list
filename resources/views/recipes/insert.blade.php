@@ -20,7 +20,7 @@
 
             <div class="form-group">
                 <label for="inputName">Name:</label>
-                <input type="text" class="form-control" id="inputName" name="name"
+                <input type="text" class="form-control" id="inputName" name="recipe-name"
                        value="@isset($recipe){{$recipe->name}}@endisset">
             </div>
 
@@ -57,8 +57,8 @@
                             @endforeach
                         @endisset
                         <tr>
-                            <td><input class="form-control" name="name" type="text"></td>
-                            <td></td>
+                            <td><input class="form-control" name="ingredient-name" type="text"></td>
+                             <td><input class="form-control" name="ingredient-amount" type="number"><input class="form-control" name="ingredient-unit" type="text"></td>
                         </tr>
                         </tbody>
                     </table>
