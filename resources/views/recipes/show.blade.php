@@ -62,10 +62,6 @@
                         </tr>
                     @endforeach
                 @endisset
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
                 </tbody>
             </table>
         </div>

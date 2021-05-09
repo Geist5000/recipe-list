@@ -24,7 +24,7 @@
             <div class="form-group">
                 <label for="inputTime">Benötigte Zeit (Minuten):</label>
                 <input type="number" class="form-control" id="inputTime" name="time"
-                       value="@isset($recipe){{$recipe->time}}@else10@endisset">
+                       value="@isset($recipe){{$recipe->time}} @endisset"/>
             </div>
 
             <div class="form-group">
@@ -66,15 +66,15 @@
 
             <div class="form-group">
                 <label for="inputTasks">Arbeitsschritte:</label>
-                <textarea type="text" class="form-control" id="inputTasks" name="tasks"
-                >@isset($recipe){{$recipe->tasks}}@endisset</textarea>
+                <textarea type="text" class="form-control" id="inputTasks" name="tasks">
+                    @isset($recipe){{$recipe->tasks}}@endisset
+                </textarea>
             </div>
 
 
             <button type="submit" class="btn btn-success">Speichern</button>
         </form>
     </div>
-
 
 
 @endsection
