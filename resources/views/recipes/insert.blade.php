@@ -2,6 +2,10 @@
 
 @section('title',isset($recipe)?'Edit':'Create')
 
+@push('scripts')
+    <script src="{{asset('js/ingredients.js')}}"></script>
+@endpush
+
 
 @section('main')
     <div class="container">
@@ -36,7 +40,7 @@
             <div class="form-group">
                 <label for="">Zutaten:</label>
                 <div id="ingredients">
-                    <table class="table">
+                    <table class="table" id="ing-table">
                         <thead>
                         <tr>
                             <th scope="col">Zutat</th>
@@ -47,13 +51,13 @@
                         @isset($recipe)
                             @foreach($recipe->ingredients as $ingredient)
                                 <tr>
-                                    <td><input name="name" type="text" value="{{$ingredient->name}}"></td>
+                                    <td><input class="form-control" name="name" type="text" value="{{$ingredient->name}}"></td>
                                     <td>{{$ingredient->pivot->amount . ' ' . $ingredient->unit->name}}</td>
                                 </tr>
                             @endforeach
                         @endisset
                         <tr>
-                            <td></td>
+                            <td><input class="form-control" name="name" type="text"></td>
                             <td></td>
                         </tr>
                         </tbody>
@@ -66,9 +70,7 @@
 
             <div class="form-group">
                 <label for="inputTasks">Arbeitsschritte:</label>
-                <textarea type="text" class="form-control" id="inputTasks" name="tasks">
-                    @isset($recipe){{$recipe->tasks}}@endisset
-                </textarea>
+                <textarea type="text" class="form-control" id="inputTasks" name="tasks">@isset($recipe){{$recipe->tasks}}@endisset</textarea>
             </div>
 
 
