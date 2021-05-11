@@ -1,0 +1,13 @@
+.input-container{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+
+.w-35{
+    width:35% !important;
+}
+
+.w-65{
+    width: 65% !important;
+}
