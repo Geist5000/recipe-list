@@ -18,8 +18,9 @@ class CreateRecipesTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->text('tasks');
-            $table->string('time');
+            $table->integer('time');
             $table->text('extras');
+            $table->integer('amount');
             $table->timestamps();
         });
     }

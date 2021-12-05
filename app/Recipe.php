@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipe extends Model
 {
-
-
     public function pictures(){
         return $this->hasMany(Picture::class);
     }
@@ -17,6 +15,6 @@ class Recipe extends Model
     }
 
     public function ingredients(){
-        return $this->belongsToMany(Ingredient::class,'is_needed')->using(IsNeeded::class)->withPivot('amount');
+        return $this->hasMany(Ingredient::class);
     }
 }
