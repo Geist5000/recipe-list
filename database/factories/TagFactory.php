@@ -5,6 +5,7 @@ namespace Database\Factories;
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +18,13 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(\App\Tag::class, function (Faker $faker) {
-    return [
-        'name' => $faker->word
-    ];
-});
+
+class TagFactory extends Factory{
+
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->word
+        ];
+    }
+}

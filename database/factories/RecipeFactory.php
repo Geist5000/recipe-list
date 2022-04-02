@@ -5,6 +5,7 @@ namespace Database\Factories;
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,13 +17,16 @@ use Faker\Generator as Faker;
 | model instances for testing / seeding your application's database.
 |
 */
+class RecipeFactory extends Factory{
 
-$factory->define(\App\Recipe::class, function (Faker $faker) {
-    return [
-        'name' => $faker->streetName,
-        'description' => $faker->text(50),
-        'tasks' => $faker->text,
-        'time' => $faker->time('i:s'),
-        'extras' => $faker->text(300)
-    ];
-});
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->streetName,
+            'description' => $this->faker->text(50),
+            'tasks' => $this->faker->text,
+            'time' => $this->faker->numberBetween(40,4000),
+            'extras' => $this->faker->text(300)
+        ];
+    }
+}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Recipe;
+use App\Unit;
 use Illuminate\Http\Request;
 
 class RecipeController extends Controller
@@ -24,7 +25,7 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        return view('recipes.insert', ['create' => true]);
+        return view('recipes.insert', ['create' => true, 'units'=>Unit::all()]);
     }
 
     /**
@@ -35,7 +36,7 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-
+        return $request->input();
     }
 
     /**
@@ -57,7 +58,7 @@ class RecipeController extends Controller
      */
     public function edit(Recipe $recipe)
     {
-        return view('recipes.insert', ['create' => false, 'recipe' => $recipe]);
+        return view('recipes.insert', ['create' => false, 'recipe' => $recipe, 'units' => Unit::all()]);
     }
 
     /**

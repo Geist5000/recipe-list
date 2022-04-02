@@ -62,17 +62,29 @@
                                     <td><input class="form-control ing-input" name="ingredient-name" type="text" value="{{$ingredient->name}}"></td>
                                     <td class="input-container">
                                         <input class="form-control ing-input w-25" name="ingredient-amount" type="number" value="{{$ingredient->pivot->amount}}">
-                                        <input class="form-control ing-input w-75" name="ingredient-unit" type="text" value="{{$ingredient->pivot->name}}">
+                                        <select class="form-control ing-input w-75" name="ingredient-unit">
+                                            @foreach($units as $unit)
+                                                <option value="{{$unit->id}}" selected="{{$units->id === $ingredient->unit->id}}">
+                                                    {{$unit->name}}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </td>
                                 </tr>
                             @endforeach
                         @endisset
                         <tr>
-                            <td><input class="form-control ing-input" name="ingredient-name" type="text"></td>
-                             <td class="input-container">
-                                 <input class="form-control ing-input w-25" name="ingredient-amount" type="number">
-                                 <input class="form-control ing-input w-75" name="ingredient-unit" type="text">
-                             </td>
+                            <td><input class="form-control ing-input" name="ingredient-name" type="text"/></td>
+                            <td class="input-container">
+                                <input class="form-control ing-input w-25" name="ingredient-amount" type="number"/>
+                                <select class="form-control ing-input w-75" name="ingredient-unit">
+                                    @foreach($units as $unit)
+                                        <option value="{{$unit->id}}">
+                                            {{$unit->name}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

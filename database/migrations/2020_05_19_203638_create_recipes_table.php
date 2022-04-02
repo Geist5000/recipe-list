@@ -20,7 +20,6 @@ class CreateRecipesTable extends Migration
             $table->text('tasks');
             $table->integer('time');
             $table->text('extras');
-            $table->integer('amount');
             $table->timestamps();
         });
     }

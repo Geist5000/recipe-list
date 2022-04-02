@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Ingredient;
+use App\Picture;
 use App\Recipe;
+use App\Tag;
 use Illuminate\Database\Seeder;
 
 class RecipeSeeder extends Seeder
@@ -14,15 +17,13 @@ class RecipeSeeder extends Seeder
      */
     public function run()
     {
-        factory(Recipe::class,10)->create()->each(function ($recipe){
-            $recipe->tags()->saveMany(\App\Tag::inRandomOrder()->limit(3)->get());
-            $recipe->pictures()->create([
-                'path-to-picture' => 'pictures/mehl.jpeg'
-            ]);
-            $ingredients = \App\Ingredient::inRandomOrder()->limit(5)->get();
-            foreach ($ingredients as $ingredient){
-                $recipe->ingredients()->save($ingredient,['amount' => 10]);
-            }
-        });
+        for ($i = 0; $i < 10; $i++) {
+            $recipe = Recipe::factory()
+                ->has(Picture::factory()->count(1))
+                ->has(Ingredient::factory()->count(5))
+                ->create();
+            $recipe->tags()->saveMany(Tag::query()->inRandomOrder()->limit(2)->get());
+        }
+
     }
 }

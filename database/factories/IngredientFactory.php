@@ -4,7 +4,10 @@ namespace Database\Factories;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Unit;
 use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use const http\Client\Curl\Features\UNIX_SOCKETS;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +20,15 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(\App\Ingredient::class, function (Faker $faker) {
-    return [
-        'name' => $faker->word
-    ];
-});
+class IngredientFactory extends Factory{
+
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->word,
+            'unit_id' => Unit::query()->inRandomOrder()->first()->id,
+            'amount' => $this->faker->numberBetween(1,100)
+        ];
+    }
+}
+
