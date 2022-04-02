@@ -25,8 +25,7 @@ class RecipeFactory extends Factory{
             'name' => $this->faker->streetName,
             'description' => $this->faker->text(50),
             'tasks' => $this->faker->text,
-            'time' => $this->faker->numberBetween(40,4000),
-            'extras' => $this->faker->text(300)
+            'time' => $this->faker->numberBetween(40,4000)
         ];
     }
 }

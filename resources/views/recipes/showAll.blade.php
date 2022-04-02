@@ -15,7 +15,7 @@
                             <h3><a class="card-title stretched-link text-dark"
                                    href="{{route('recipes.show',[$recipe])}}">{{$recipe->name}}</a></h3>
 
-                            <h6 class="card-subtitle text-muted">Benötigte Zeit: {{$recipe->time}}</h6>
+                            <h6 class="card-subtitle text-muted">Benötigte Zeit: {{$recipe->timeAsInterval()->forHumans()}}</h6>
                             <hr>
 
                             <div class="card-text">

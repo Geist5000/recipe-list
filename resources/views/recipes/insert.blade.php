@@ -13,7 +13,16 @@
 
 @section('main')
     <div class="container">
-
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <p><strong>Opps Something went wrong</strong></p>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
 
 
@@ -24,21 +33,30 @@
 
             <div class="form-group">
                 <label for="inputName">Name:</label>
-                <input type="text" class="form-control" id="inputName" name="recipe-name"
+                <input type="text" class="form-control" id="inputName" name="name"
                        value="@isset($recipe){{$recipe->name}}@endisset">
+                @error('name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
 
 
             <div class="form-group">
                 <label for="inputTime">Benötigte Zeit (Minuten):</label>
                 <input type="number" class="form-control" id="inputTime" name="time"
-                       value="@isset($recipe){{$recipe->time}} @endisset"/>
+                       value="@isset($recipe){{$recipe->time}}@endisset"/>
+                @error('time')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="inputDescription">Beschreibung:</label>
                 <input type="text" class="form-control" id="inputDescription" name="description"
                        value="@isset($recipe){{$recipe->description}}@endisset">
+                @error('description')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
@@ -59,12 +77,14 @@
                         @isset($recipe)
                             @foreach($recipe->ingredients as $ingredient)
                                 <tr>
+                                    <input type="hidden" name="ingredient[{{$loop->index}}][id]" value="{{$ingredient->id}}"/>
                                     <td><input class="form-control ing-input" name="ingredient[{{$loop->index}}][name]" type="text" value="{{$ingredient->name}}"></td>
                                     <td class="input-container">
-                                        <input class="form-control ing-input w-25" name="ingredient[{{$loop->index}}][amount]" type="number" value="{{$ingredient->pivot->amount}}">
+
+                                        <input class="form-control ing-input w-25" name="ingredient[{{$loop->index}}][amount]" type="number" value="{{$ingredient->amount}}">
                                         <select class="form-control ing-input w-75" name="ingredient[{{$loop->index}}][unit]">
                                             @foreach($units as $unit)
-                                                <option value="{{$unit->id}}" selected="{{$units->id === $ingredient->unit->id}}">
+                                                <option value="{{$unit->id}}" selected="{{$unit->id === $ingredient->unit->id}}">
                                                     {{$unit->name}}
                                                 </option>
                                             @endforeach
@@ -91,6 +111,9 @@
                     </table>
 
                 </div>
+                @error('ingredient')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
 
             </div>
 

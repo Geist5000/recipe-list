@@ -4,6 +4,10 @@
     gap: 0.5em;
 }
 
+.hidden-input{
+    display:none;
+}
+
 .w-35{
     width:35% !important;
 }
