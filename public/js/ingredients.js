@@ -3,9 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let body = table.getElementsByTagName('tbody'.toUpperCase())[0];
     let children = body.children;
     for (let i = 0; i < children.length; i++) {
-        forEachAllValueTags(children[i], (e) => {
-            e.addEventListener('input', onContentsChanged);
-        });
+
+        children[i].addEventListener('input', onContentsChanged);
     }
 });
 
@@ -30,6 +29,16 @@ function onContentsChanged(event) {
 function insertTableRow(tableBody) {
     let currentLast = tableBody.lastElementChild;
     let newLast = currentLast.cloneNode(true);
+    const inputNameRegex = /^(.+\[)(\d+)(].+)$/
+    forEachAllValueTags(newLast, (element) => {
+        let name = element.name;
+        if (name !== undefined && typeof name === "string") {
+            const match = name.match(inputNameRegex);
+            const number = parseInt(match[2]);
+            name = name.replace(inputNameRegex, "$1" + (number + 1) + "$3")
+            element.name = name;
+        }
+    })
     newLast.addEventListener('input', onContentsChanged);
     tableBody.appendChild(newLast);
     clearAllValues(newLast);
@@ -41,6 +50,10 @@ function clearAllValues(element) {
             e.value = '';
         } else if (e.tagName.toUpperCase() === 'textarea'.toUpperCase()) {
             e.innerText = '';
+        }else if(e.tagName.toLowerCase() === "select"){
+            for (let i = 0; i < e.options.length; i++) {
+                e.options[i].selected = i === 0;
+            }
         }
     })
 }
@@ -49,6 +62,11 @@ function forEachAllValueTags(element, f) {
     let elements = element.getElementsByTagName('INPUT');
     for (let i = 0; i < elements.length; i++) {
         f(elements[i]);
+    }
+
+    elements = element.getElementsByTagName('SELECT');
+    for (const element1 of elements) {
+        f(element1);
     }
     elements = element.getElementsByTagName('TEXTAREA');
     for (let i = 0; i < elements.length; i++) {
@@ -63,9 +81,12 @@ function doesContainAnyValues(element) {
     }
     let anyNotBlank = false;
     forEachAllValueTags(e, (e) => {
-        let value = e.tagName.toUpperCase() === 'input'.toUpperCase() ? e.value : e.innerText;
-        if (!isBlank(value)) {
-            anyNotBlank = true;
+        const tagName =  e.tagName.toLowerCase();
+        if(tagName !== "select"){
+            let value = tagName === 'input' ? e.value : e.innerText;
+            if (!isBlank(value)) {
+                anyNotBlank = true;
+            }
         }
     });
     return anyNotBlank;

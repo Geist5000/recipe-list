@@ -58,7 +58,7 @@
                     @foreach($recipe->ingredients as $ingredient)
                         <tr>
                             <td>{{$ingredient->name}}</td>
-                            <td>{{$ingredient->pivot->amount . ' ' . $ingredient->unit->name}}</td>
+                            <td>{{$ingredient->amount . ' ' . $ingredient->unit->name}}</td>
                         </tr>
                     @endforeach
                 @endisset

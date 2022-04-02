@@ -59,10 +59,10 @@
                         @isset($recipe)
                             @foreach($recipe->ingredients as $ingredient)
                                 <tr>
-                                    <td><input class="form-control ing-input" name="ingredient-name" type="text" value="{{$ingredient->name}}"></td>
+                                    <td><input class="form-control ing-input" name="ingredient[{{$loop->index}}][name]" type="text" value="{{$ingredient->name}}"></td>
                                     <td class="input-container">
-                                        <input class="form-control ing-input w-25" name="ingredient-amount" type="number" value="{{$ingredient->pivot->amount}}">
-                                        <select class="form-control ing-input w-75" name="ingredient-unit">
+                                        <input class="form-control ing-input w-25" name="ingredient[{{$loop->index}}][amount]" type="number" value="{{$ingredient->pivot->amount}}">
+                                        <select class="form-control ing-input w-75" name="ingredient[{{$loop->index}}][unit]">
                                             @foreach($units as $unit)
                                                 <option value="{{$unit->id}}" selected="{{$units->id === $ingredient->unit->id}}">
                                                     {{$unit->name}}
@@ -73,11 +73,12 @@
                                 </tr>
                             @endforeach
                         @endisset
+                        <?php $lastIngrediendCount = isset($recipe)?$recipe->ingredients->count():0 ?>
                         <tr>
-                            <td><input class="form-control ing-input" name="ingredient-name" type="text"/></td>
+                            <td><input class="form-control ing-input" name="ingredient[{{$lastIngrediendCount}}][name]" type="text"/></td>
                             <td class="input-container">
-                                <input class="form-control ing-input w-25" name="ingredient-amount" type="number"/>
-                                <select class="form-control ing-input w-75" name="ingredient-unit">
+                                <input class="form-control ing-input w-25" name="ingredient[{{$lastIngrediendCount}}][amount]" type="number"/>
+                                    <select class="form-control ing-input w-75" name="ingredient[{{$lastIngrediendCount}}][unit]">
                                     @foreach($units as $unit)
                                         <option value="{{$unit->id}}">
                                             {{$unit->name}}
@@ -98,6 +99,8 @@
                 <label for="inputTasks">Arbeitsschritte:</label>
                 <textarea type="text" class="form-control" id="inputTasks" name="tasks">@isset($recipe){{$recipe->tasks}}@endisset</textarea>
             </div>
+
+                {{csrf_field()}}
 
 
             <button type="submit" class="btn btn-success">Speichern</button>

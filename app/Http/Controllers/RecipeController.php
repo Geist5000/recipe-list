@@ -36,7 +36,7 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->input();
+        return response()->json($request->all());
     }
 
     /**
