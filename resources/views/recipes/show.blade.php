@@ -1,6 +1,9 @@
 @extends('layout.app')
 
 @section('title',$recipe->name)
+@push('style')
+    <link rel="stylesheet" href="{{asset('css/recipe-pictures.css')}}"/>
+@endpush
 @section('main')
     <div class="container mt-3 mb-3">
 
@@ -9,16 +12,25 @@
         <hr>
 
 
-
         @if($recipe->pictures->count() > 0)
             <div class="row">
                 <div class="col-2"></div>
-                <div id="pictures" class="carousel slide carousel-fade col-8" data-ride="carousel">
+                <div id="pictures" class="carousel slide col-8" data-ride="carousel" data-interval="false">
+                    <ol class="carousel-indicators">
+                        @for($i = 0; $i < $recipe->pictures->count(); $i++)
+                            <li data-target="#carouselExampleIndicators" data-slide-to="{{$i}}" @class(["active" => $i === 0])></li>
+                        @endfor
+                    </ol>
                     <div class="carousel-inner">
                         @foreach($recipe->pictures as $picture)
-                            <div class="carousel-item @if($loop->first) active @endif ">
-                                <img class="w-100 bg-light" src="{{route("pictures.show",$picture)}}" alt="picture of recipe">
+
+                            <div class="carousel-item carousel-picture @if($loop->first) active @endif ">
+                                <a href="{{route("pictures.show",$picture)}}">
+                                    <img class="bg-light" src="{{route("pictures.show",$picture)}}"
+                                         alt="picture of recipe">
+                                </a>
                             </div>
+
                         @endforeach
                     </div>
 
@@ -68,7 +80,7 @@
 
         <div class="mt-3 mb-3">
             <h2>Arbeitsschritte:</h2>
-            <p class="ml-4">{{$recipe->tasks}}</p>
+            <p class="ml-4">{!!nl2br(e($recipe->tasks))!!}</p>
         </div>
     </div>
 

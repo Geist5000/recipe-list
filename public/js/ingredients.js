@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let body = table.getElementsByTagName('tbody'.toUpperCase())[0];
     let children = body.children;
     for (let i = 0; i < children.length; i++) {
-
         children[i].addEventListener('input', onContentsChanged);
     }
 });

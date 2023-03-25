@@ -4,10 +4,15 @@
 
 @push('style')
     <link rel="stylesheet" href="{{asset('css/insertRecipe.css')}}">
+    <link rel="stylesheet" href="{{asset('css/recipe-pictures.css')}}">
 @endpush
 
 @push('scripts')
     <script src="{{asset('js/ingredients.js')}}"></script>
+    <script src="{{asset('js/recipe-pictures.js')}}"></script>
+    <script>
+
+    </script>
 @endpush
 
 
@@ -15,7 +20,7 @@
     <div class="container">
         @if($errors->any())
             <div class="alert alert-danger">
-                <p><strong>Opps Something went wrong</strong></p>
+                <p><strong>Oops Something went wrong</strong></p>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -27,8 +32,11 @@
 
 
     <div class="container">
-        <form method="post" action="{{isset($recipe)?route('recipes.update',[$recipe]):route('recipes.store')}}">
-            @isset($recipe) @method('put') @endisset
+        <form id="create-recipe" method="post" enctype="multipart/form-data"
+              action="{{isset($recipe)?route('recipes.update',[$recipe]):route('recipes.store')}}">
+            @isset($recipe)
+                @method('put')
+            @endisset
 
 
             <div class="form-group">
@@ -36,7 +44,7 @@
                 <input type="text" class="form-control" id="inputName" name="name"
                        value="@isset($recipe){{$recipe->name}}@endisset">
                 @error('name')
-                    <div class="alert alert-danger">{{ $message }}</div>
+                <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -46,7 +54,7 @@
                 <input type="number" class="form-control" id="inputTime" name="time"
                        value="@isset($recipe){{$recipe->time}}@endisset"/>
                 @error('time')
-                    <div class="alert alert-danger">{{ $message }}</div>
+                <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -55,7 +63,7 @@
                 <input type="text" class="form-control" id="inputDescription" name="description"
                        value="@isset($recipe){{$recipe->description}}@endisset">
                 @error('description')
-                    <div class="alert alert-danger">{{ $message }}</div>
+                <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -77,14 +85,20 @@
                         @isset($recipe)
                             @foreach($recipe->ingredients as $ingredient)
                                 <tr>
-                                    <input type="hidden" label" name="ingredient[{{$loop->index}}][id]" value="{{$ingredient->id}}"/>
-                                    <td><input class="form-control ing-input" name="ingredient[{{$loop->index}}][name]" type="text" value="{{$ingredient->name}}"></td>
+                                    <input type="hidden" name="ingredient[{{$loop->index}}][id]"
+                                           value="{{$ingredient->id}}"/>
+                                    <td><input class="form-control ing-input" name="ingredient[{{$loop->index}}][name]"
+                                               type="text" value="{{$ingredient->name}}"></td>
                                     <td class="input-container">
 
-                                        <input class="form-control ing-input w-25" name="ingredient[{{$loop->index}}][amount]" type="number" value="{{$ingredient->amount}}">
-                                        <select class="form-control ing-input w-75" name="ingredient[{{$loop->index}}][unit]">
+                                        <input class="form-control ing-input w-25"
+                                               name="ingredient[{{$loop->index}}][amount]" type="number"
+                                               value="{{$ingredient->amount}}">
+                                        <select class="form-control ing-input w-75"
+                                                name="ingredient[{{$loop->index}}][unit]">
                                             @foreach($units as $unit)
-                                                <option value="{{$unit->id}}" selected="{{$unit->id === $ingredient->unit->id}}">
+                                                <option value="{{$unit->id}}"
+                                                        selected="{{$unit->id === $ingredient->unit->id}}">
                                                     {{$unit->name}}
                                                 </option>
                                             @endforeach
@@ -93,12 +107,15 @@
                                 </tr>
                             @endforeach
                         @endisset
-                        <?php $lastIngrediendCount = isset($recipe)?$recipe->ingredients->count():0 ?>
+                            <?php $lastIngrediendCount = isset($recipe) ? $recipe->ingredients->count() : 0 ?>
                         <tr>
-                            <td><input class="form-control ing-input" name="ingredient[{{$lastIngrediendCount}}][name]" type="text"/></td>
+                            <td><input class="form-control ing-input" name="ingredient[{{$lastIngrediendCount}}][name]"
+                                       type="text"/></td>
                             <td class="input-container">
-                                <input class="form-control ing-input w-25" name="ingredient[{{$lastIngrediendCount}}][amount]" type="number"/>
-                                    <select class="form-control ing-input w-75" name="ingredient[{{$lastIngrediendCount}}][unit]">
+                                <input class="form-control ing-input w-25"
+                                       name="ingredient[{{$lastIngrediendCount}}][amount]" type="number"/>
+                                <select class="form-control ing-input w-75"
+                                        name="ingredient[{{$lastIngrediendCount}}][unit]">
                                     @foreach($units as $unit)
                                         <option value="{{$unit->id}}">
                                             {{$unit->name}}
@@ -112,7 +129,7 @@
 
                 </div>
                 @error('ingredient')
-                    <div class="alert alert-danger">{{ $message }}</div>
+                <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
 
             </div>
@@ -120,20 +137,32 @@
 
             <div class="form-group">
                 <label for="inputTasks">Arbeitsschritte:</label>
-                <textarea type="text" class="form-control" id="inputTasks" name="tasks">@isset($recipe){{$recipe->tasks}}@endisset</textarea>
+                <textarea wrap="hard" rows="10" type="text" class="form-control" id="inputTasks" name="tasks">@isset($recipe){{$recipe->tasks}}@endisset</textarea>
             </div>
 
-                <div class="form-group">
-                    <label for="pictures" class="form-label">Bilder</label>
-                    <input class="form-control" type="file" id="pictures">
+            <div class="form-group" id="recipe-picture-group">
+                <template id="picture-preview-template">
+                    <x-picture-preview src="#"></x-picture-preview>
+                </template>
+                <label for="pictures">Bilder:</label>
+
+                <div id="picture-carousel">
+                    @isset($recipe)
+                        @foreach($recipe->pictures as $picture)
+                            <x-picture-preview :src='route("pictures.show",$picture)'
+                                               :id="$picture->id"></x-picture-preview>
+                        @endforeach
+                    @endisset
                 </div>
 
-                {{csrf_field()}}
+                <input class="form-control-file" name="pictures" accept="image/*" type="file" id="pictures">
+            </div>
+
+            {{csrf_field()}}
 
 
             <button type="submit" class="btn btn-success">Speichern</button>
         </form>
     </div>
-
 
 @endsection

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Ingredient;
+use App\Picture;
 use App\Recipe;
 use App\Unit;
 use Illuminate\Http\Request;
@@ -19,7 +21,11 @@ class RecipeController extends Controller
         "ingredient.*.id" => ["nullable", "integer"],
         "ingredient.*.name" => ["required_with:ingredient.*.id", "nullable", "string"],
         "ingredient.*.amount" => ["required_with:ingredient.*.name", "nullable", "integer", "min:1"],
-        "ingredient.*.unit" => ["required_with:ingredient.*.name", "nullable", "integer", "exists:units,id"]
+        "ingredient.*.unit" => ["required_with:ingredient.*.name", "nullable", "integer", "exists:units,id"],
+        "toRemovePictures" => ["array"],
+        "toRemovePictures.*" => ["integer", "min:1"],
+        "pictures" => ["array"],
+        "pictures.*" => ["image"]
     ];
 
     /**
@@ -46,7 +52,7 @@ class RecipeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function store(Request $request)
     {
@@ -54,20 +60,24 @@ class RecipeController extends Controller
 
         $recipe = DB::transaction(function () use ($validated) {
 
-            $recipe = Recipe::query()->create($validated);
+            $recipe = Recipe::create($validated);
 
+            $this->saveNewPictures($validated, $recipe);
+
+            $ingredients = [];
             foreach ($validated["ingredient"] as $rawIngredient) {
                 if (!is_null($rawIngredient["name"])) {
-                    $ingredient = $recipe->ingredients()->make($rawIngredient);
+                    $ingredient = new Ingredient($rawIngredient);
                     $ingredient->unit_id = $rawIngredient["unit"];
-                    $ingredient->save();
+                    $ingredients[] = $ingredient;
                 }
             }
+            $recipe->ingredients()->saveMany($ingredients);
             $recipe->refresh();
             return $recipe;
         });
 
-        return response()->redirectToRoute("recipes.show", ["recipe" => $recipe->id]);
+        return view("recipes.show", ["recipe" => $recipe]);
 
     }
 
@@ -98,13 +108,20 @@ class RecipeController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Recipe $recipe
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function update(Request $request, Recipe $recipe)
     {
         $validated = $request->validate(self::$recipeValidationArray);
 
+
         $recipe = DB::transaction(function () use ($validated, $recipe) {
+
+            if (array_key_exists("toRemovePictures", $validated)) {
+                $recipe->pictures()->whereIn("id", $validated["toRemovePictures"])->delete();
+            }
+            $this->saveNewPictures($validated, $recipe);
+
 
             $recipe->fill($validated);
             $ingrediens = $recipe->ingredients;
@@ -124,10 +141,12 @@ class RecipeController extends Controller
             }
 
 
+            $recipe->save();
+            $recipe->refresh();
             return $recipe;
         });
 
-        return response()->redirectToRoute("recipes.show", ["recipies" => $recipe->id]);
+        return view("recipes.show", ["recipe" => $recipe]);
     }
 
     /**
@@ -140,5 +159,24 @@ class RecipeController extends Controller
     {
         $recipe->delete();
         return $this->index();
+    }
+
+    /**
+     * @param array $validated
+     * @param Recipe $recipe
+     * @return void
+     */
+    private function saveNewPictures(array $validated, Recipe $recipe): void
+    {
+        if (array_key_exists("pictures", $validated)) {
+            $pictures = [];
+            foreach ($validated["pictures"] as $pictureFile) {
+                $path = $pictureFile->store("recipePictures");
+                $picture = new Picture();
+                $picture["path-to-picture"] = $path;
+                $pictures[] = $picture;
+            }
+            $recipe->pictures()->saveMany($pictures);
+        }
     }
 }
