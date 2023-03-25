@@ -6,8 +6,10 @@ use App\Ingredient;
 use App\Picture;
 use App\Recipe;
 use App\Unit;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class RecipeController extends Controller
 {
@@ -115,11 +117,21 @@ class RecipeController extends Controller
         $validated = $request->validate(self::$recipeValidationArray);
 
 
+        if (array_key_exists("toRemovePictures", $validated)) {
+
+            foreach ($recipe->pictures as $picture) {
+                if (in_array($picture->id, $validated["toRemovePictures"])) {
+                    DB::transaction(function () use ($picture, $validated) {
+                        Storage::delete($picture["path-to-picture"]);
+                        $picture->delete();
+                    });
+                }
+            }
+        }
+
         $recipe = DB::transaction(function () use ($validated, $recipe) {
 
-            if (array_key_exists("toRemovePictures", $validated)) {
-                $recipe->pictures()->whereIn("id", $validated["toRemovePictures"])->delete();
-            }
+
             $this->saveNewPictures($validated, $recipe);
 
 
