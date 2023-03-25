@@ -69,7 +69,7 @@
                         </colgroup>
                         <thead>
                         <tr>
-                            <th scope="col">Zutat</th>
+                            <th scope="col"><label id="ingredient-label">Zutat</label></th>
                             <th scope="col">Menge</th>
                         </tr>
                         </thead>
@@ -77,7 +77,7 @@
                         @isset($recipe)
                             @foreach($recipe->ingredients as $ingredient)
                                 <tr>
-                                    <input type="hidden" name="ingredient[{{$loop->index}}][id]" value="{{$ingredient->id}}"/>
+                                    <input type="hidden" label" name="ingredient[{{$loop->index}}][id]" value="{{$ingredient->id}}"/>
                                     <td><input class="form-control ing-input" name="ingredient[{{$loop->index}}][name]" type="text" value="{{$ingredient->name}}"></td>
                                     <td class="input-container">
 
@@ -122,6 +122,11 @@
                 <label for="inputTasks">Arbeitsschritte:</label>
                 <textarea type="text" class="form-control" id="inputTasks" name="tasks">@isset($recipe){{$recipe->tasks}}@endisset</textarea>
             </div>
+
+                <div class="form-group">
+                    <label for="pictures" class="form-label">Bilder</label>
+                    <input class="form-control" type="file" id="pictures">
+                </div>
 
                 {{csrf_field()}}
 

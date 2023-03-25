@@ -10,6 +10,5 @@
         <hr>
     </div>
 
-
     @parent
 @endsection

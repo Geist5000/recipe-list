@@ -9,13 +9,15 @@
                     <div class="card">
                         @if($recipe->pictures->count() > 0)
 
-                            <img class="card-img-top" src="{{asset($recipe->pictures[0]['path-to-picture'])}}">
+                            <img class="card-img-top" loading="lazy"
+                                 src="{{route("pictures.show",$recipe->pictures[0])}}">
                         @endif
                         <div class="card-body">
                             <h3><a class="card-title stretched-link text-dark"
                                    href="{{route('recipes.show',[$recipe])}}">{{$recipe->name}}</a></h3>
 
-                            <h6 class="card-subtitle text-muted">Benötigte Zeit: {{$recipe->timeAsInterval()->forHumans()}}</h6>
+                            <h6 class="card-subtitle text-muted">Benötigte
+                                Zeit: {{$recipe->timeAsInterval()->forHumans()}}</h6>
                             <hr>
 
                             <div class="card-text">
@@ -37,7 +39,6 @@
 
                     </div>
                 </div>
-
 
             @endforeach
         </div>

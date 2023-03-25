@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PictureController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/',url('/recipes'));
+Route::redirect('/', url('/recipes'));
 
 
-Route::resource('recipes','RecipeController');
+Route::resource('recipes', 'RecipeController');
 
-Route::resource('tags','TagController');
+Route::resource('tags', 'TagController');
+
+Route::get('pictures/{picture}', [PictureController::class, "show"])
+    ->name("pictures.show");

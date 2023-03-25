@@ -17,7 +17,7 @@ class PictureFactory extends Factory
     public function definition()
     {
         return [
-            "path-to-picture" => "pictures/mehl.jpeg"
+            "path-to-picture" => "mehl.jpeg"
         ];
     }
 }
