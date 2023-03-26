@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="de">
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
@@ -37,15 +37,23 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li>
-                <a class="nav-item nav-link @if(url()->current() == route('recipes.index')) active @endif"
-                   href="{{route('recipes.index')}}">Alle Rezepte</a></li>
-            <li>
-                <a class="nav-item nav-link @if(url()->current() == route('recipes.create')) active @endif"
-                   href="{{route('recipes.create')}}">Neues Rezept</a></li>
-            <li>
-                <a class="nav-item nav-link @if(url()->current() == route('tags.index')) active @endif"
-                   href="{{route('tags.index')}}">Tags</a></li>
+            @auth
+                <li>
+                    <a class="nav-item nav-link @if(url()->current() == route('recipes.index')) active @endif"
+                       href="{{route('recipes.index')}}">Alle Rezepte</a></li>
+                <li>
+                    <a class="nav-item nav-link @if(url()->current() == route('recipes.create')) active @endif"
+                       href="{{route('recipes.create')}}">Neues Rezept</a></li>
+                <li>
+                    <a class="nav-item nav-link @if(url()->current() == route('tags.index')) active @endif"
+                       href="{{route('tags.index')}}">Tags</a></li>
+            @endauth
+            @guest
+                <li>
+                    <a @class(["nav-item","nav-link","active"=>url()->current() == route('login')])
+                       href="{{route("login")}}">Login</a>
+                </li>
+            @endguest
         </ul>
 
     </div>

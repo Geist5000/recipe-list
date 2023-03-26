@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PictureController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,12 +15,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', url('/recipes'));
+Route::redirect("/", "login");
 
 
-Route::resource('recipes', 'RecipeController');
+Route::middleware('guest')->group(function () {
 
-Route::resource('tags', 'TagController');
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+        ->name('login');
 
-Route::get('pictures/{picture}', [PictureController::class, "show"])
-    ->name("pictures.show");
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+});
+
+Route::middleware(["auth"])->group(function () {
+    Route::redirect('/home', url('/recipes'));
+
+
+    Route::resource('recipes', 'RecipeController');
+
+    Route::resource('tags', 'TagController');
+
+    Route::get('pictures/{picture}', [PictureController::class, "show"])
+        ->name("pictures.show");
+});
+
+
+
