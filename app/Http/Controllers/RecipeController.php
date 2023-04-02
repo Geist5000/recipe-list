@@ -6,7 +6,6 @@ use App\Ingredient;
 use App\Picture;
 use App\Recipe;
 use App\Unit;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -79,7 +78,7 @@ class RecipeController extends Controller
             return $recipe;
         });
 
-        return view("recipes.show", ["recipe" => $recipe]);
+        return redirect(route("recipes.show", ["recipe" => $recipe]));
 
     }
 
@@ -159,7 +158,7 @@ class RecipeController extends Controller
             return $recipe;
         });
 
-        return view("recipes.show", ["recipe" => $recipe]);
+        return redirect(route("recipes.show", ["recipe" => $recipe]));
     }
 
     /**
