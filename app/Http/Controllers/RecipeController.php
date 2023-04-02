@@ -131,7 +131,6 @@ class RecipeController extends Controller
 
         $recipe = DB::transaction(function () use ($validated, $recipe) {
 
-
             $this->saveNewPictures($validated, $recipe);
 
 
@@ -140,10 +139,12 @@ class RecipeController extends Controller
 
             foreach ($validated["ingredient"] as $rawIngredient) {
                 if (!is_null($rawIngredient["name"])) {
-                    $foundIngredient = $ingrediens->where("id", "=", $rawIngredient["id"])->first();
-                    if (!is_null($rawIngredient["id"]) && !is_null($foundIngredient)) {
-                        $foundIngredient->fill($rawIngredient);
-                        $foundIngredient->save();
+                    if (isset($rawIngredient["id"]) && !is_null($rawIngredient["id"])) {
+                        $foundIngredient = $ingrediens->where("id", "=", $rawIngredient["id"])->first();
+                        if (!is_null($foundIngredient)) {
+                            $foundIngredient->fill($rawIngredient);
+                            $foundIngredient->save();
+                        }
                     } else {
                         $ingredient = $recipe->ingredients()->make($rawIngredient);
                         $ingredient->unit_id = $rawIngredient["unit"];
