@@ -98,7 +98,7 @@
                                                 name="ingredient[{{$loop->index}}][unit]">
                                             @foreach($units as $unit)
                                                 <option value="{{$unit->id}}"
-                                                        selected="{{$unit->id === $ingredient->unit->id}}">
+                                                        @selected($unit->id === $ingredient->unit->id)>
                                                     {{$unit->name}}
                                                 </option>
                                             @endforeach

@@ -6,8 +6,12 @@
 @endpush
 @section('main')
     <div class="container mt-3 mb-3">
-
-        <h1>{{$recipe->name}}</h1>
+        <div class="position-relative w-100">
+            <h1>{{$recipe->name}}</h1>
+            <div class="top-right">
+                <a class="btn btn-primary" href="{{route("recipes.edit",["recipe"=>$recipe])}}">Bearbeiten</a>
+            </div>
+        </div>
         <h6 class="mt-2 card-subtitle text-muted">Benötigte Zeit: {{$recipe->timeAsInterval()->forHumans()}}</h6>
         <hr>
 
@@ -18,7 +22,8 @@
                 <div id="pictures" class="carousel slide col-8" data-ride="carousel" data-interval="false">
                     <ol class="carousel-indicators">
                         @for($i = 0; $i < $recipe->pictures->count(); $i++)
-                            <li data-target="#carouselExampleIndicators" data-slide-to="{{$i}}" @class(["active" => $i === 0])></li>
+                            <li data-target="#carouselExampleIndicators"
+                                data-slide-to="{{$i}}" @class(["active" => $i === 0])></li>
                         @endfor
                     </ol>
                     <div class="carousel-inner">
@@ -82,6 +87,7 @@
             <h2>Arbeitsschritte:</h2>
             <p class="ml-4">{!!nl2br(e($recipe->tasks))!!}</p>
         </div>
+
     </div>
 
 @endsection
