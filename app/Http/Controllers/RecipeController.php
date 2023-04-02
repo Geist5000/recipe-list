@@ -165,12 +165,13 @@ class RecipeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Recipe $recipe
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy(Recipe $recipe)
     {
+
         $recipe->delete();
-        return $this->index();
+        return redirect("recipes.index");
     }
 
     /**

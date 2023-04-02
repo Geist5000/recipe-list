@@ -16,7 +16,7 @@ class CreatePicturesTable extends Migration
         Schema::create('pictures', function (Blueprint $table) {
             $table->id();
             $table->string('path-to-picture');
-            $table->foreignId('recipe_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('recipe_id')->constrained();
             $table->timestamps();
         });
     }
